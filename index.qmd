@@ -243,18 +243,18 @@ Adding country information to earthquake data involves performing a spatial join
 
 ```{r}
 Sys.setenv(PROJ_LIB = "/opt/homebrew/Cellar/proj/9.5.1/share/proj")
-# Load world country boundaries (spData package provides 'world' dataset)
+
+# Load world country boundaries
 data(world, package = "spData")
 
-# Ensure 'world' has a CRS
-if (is.na(st_crs(world))) {
-  st_crs(world) <- 4326  # Assign WGS84 CRS
+# Standardize CRS for 'world' and 'quake_sf'
+world <- st_transform(world, crs = 4326)
+
+if (is.na(st_crs(quake_sf))) {
+  st_crs(quake_sf) <- 4326  # Assign CRS if missing
 }
 
-# Check and fix CRS and geometry issues in 'quake_sf'
-if (is.na(st_crs(quake_sf))) {
-  st_crs(quake_sf) <- 4326  # Assign WGS84 CRS
-}
+quake_sf <- st_transform(quake_sf, crs = 4326)  # Transform to match 'world'
 
 # Validate and fix geometries if needed
 if (!all(st_is_valid(quake_sf))) {
@@ -264,7 +264,7 @@ if (!all(st_is_valid(quake_sf))) {
 # Remove rows with empty geometries
 quake_sf <- quake_sf[!st_is_empty(quake_sf), ]
 
-# Perform spatial join between earthquake points and country polygons
+# Perform spatial join
 quake_with_countries <- st_join(quake_sf, world["name_long"])
 
 # Summarize earthquake data by country
