@@ -261,20 +261,34 @@ The analysis of earthquake trends over time reveals patterns in seismic activity
 Adding country information to earthquake data involves performing a spatial join between earthquake point locations and a polygon dataset of country boundaries. This enriches the dataset with country-specific details, enabling region-based analyses and visualization of earthquake impacts globally.
 
 ```{r}
-
+Sys.setenv(PROJ_LIB = "/opt/homebrew/Cellar/proj/9.5.1/share/proj")
 # Load world country boundaries (spData package provides 'world' dataset)
 data(world, package = "spData")
 
-# Explicitly set CRS to WGS84 (EPSG:4326) for both datasets
-st_crs(world) <- 4326  # Set CRS for the world dataset
-st_crs(quake_sf) <- 4326  # Set CRS for the earthquake dataset
+# Ensure 'world' has a CRS
+if (is.na(st_crs(world))) {
+  st_crs(world) <- 4326  # Assign WGS84 CRS
+}
+
+# Check and fix CRS and geometry issues in 'quake_sf'
+if (is.na(st_crs(quake_sf))) {
+  st_crs(quake_sf) <- 4326  # Assign WGS84 CRS
+}
+
+# Validate and fix geometries if needed
+if (!all(st_is_valid(quake_sf))) {
+  quake_sf <- st_make_valid(quake_sf)
+}
+
+# Remove rows with empty geometries
+quake_sf <- quake_sf[!st_is_empty(quake_sf), ]
 
 # Perform spatial join between earthquake points and country polygons
 quake_with_countries <- st_join(quake_sf, world["name_long"])
 
 # Summarize earthquake data by country
 country_quakes <- quake_with_countries %>%
-  st_drop_geometry() %>%  # Drop geometry for summarizing non-spatial data
+  st_drop_geometry() %>%
   group_by(name_long) %>%
   summarize(
     earthquake_count = n(),
@@ -282,9 +296,6 @@ country_quakes <- quake_with_countries %>%
     max_magnitude = max(mag, na.rm = TRUE)
   ) %>%
   arrange(desc(earthquake_count))
-
-# Inspect the summarized data
-print(country_quakes)
 
 # Join summarized data back to the world dataset
 world_quakes <- world %>%
