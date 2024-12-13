@@ -242,21 +242,22 @@ The analysis of earthquake trends over time reveals patterns in seismic activity
 Adding country information to earthquake data involves performing a spatial join between earthquake point locations and a polygon dataset of country boundaries. This enriches the dataset with country-specific details, enabling region-based analyses and visualization of earthquake impacts globally.
 
 ```{r}
-Sys.setenv(PROJ_LIB = "/opt/homebrew/Cellar/proj/9.5.1/share/proj")
-
 # Load world country boundaries
 data(world, package = "spData")
 
-# Standardize CRS for 'world' and 'quake_sf'
-world <- st_transform(world, crs = 4326)
-
-if (is.na(st_crs(quake_sf))) {
-  st_crs(quake_sf) <- 4326  # Assign CRS if missing
+# Ensure 'world' has a valid CRS
+if (is.na(st_crs(world))) {
+  st_crs(world) <- 4326  # Assign CRS if missing
 }
 
-quake_sf <- st_transform(quake_sf, crs = 4326)  # Transform to match 'world'
+# Ensure 'quake_sf' has a CRS and force it to match 'world'
+if (is.na(st_crs(quake_sf))) {
+  st_crs(quake_sf) <- st_crs(world)  # Assign CRS to match 'world'
+} else {
+  st_crs(quake_sf) <- st_crs(world)  # Force CRS harmonization
+}
 
-# Validate and fix geometries if needed
+# Validate geometries in 'quake_sf'
 if (!all(st_is_valid(quake_sf))) {
   quake_sf <- st_make_valid(quake_sf)
 }
@@ -284,6 +285,7 @@ world_quakes <- world %>%
 
 # Inspect the final dataset
 print(world_quakes)
+
 
 ```
 
