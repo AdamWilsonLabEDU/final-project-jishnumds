@@ -183,12 +183,31 @@ The spatial distribution of earthquakes provides valuable insights into where se
 
 ```{r}
 
+# Check and set CRS for 'quake_sf'
+if (is.na(st_crs(quake_sf))) {
+  st_crs(quake_sf) <- 4326  # Assign WGS84 CRS
+}
+
+# Check and set CRS for 'world'
+if (is.na(st_crs(world))) {
+  st_crs(world) <- 4326  # Assign WGS84 CRS
+}
+
+# Ensure CRS consistency
+if (st_crs(quake_sf) != st_crs(world)) {
+  quake_sf <- st_transform(quake_sf, st_crs(world))
+}
+
+# Extract coordinates for plotting
+quake_coords <- as.data.frame(st_coordinates(quake_sf)) %>%
+  cbind(mag = quake_sf$mag)  # Combine coordinates with magnitude
+
 # Plot earthquake locations
 ggplot() +
   geom_sf(data = world, fill = "lightgray", color = "white") +
   geom_point(
-    data = quake_sf,
-    aes(x = st_coordinates(quake_sf)[, 1], y = st_coordinates(quake_sf)[, 2], color = mag),
+    data = quake_coords,
+    aes(x = X, y = Y, color = mag),
     alpha = 0.7, size = 1
   ) +
   scale_color_viridis_c(option = "plasma", name = "Magnitude") +
