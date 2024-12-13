@@ -51,7 +51,7 @@ Interactive maps, heatmaps, and statistical visualizations are employed to commu
 
     -   All datasets are publicly accessible and downloaded directly within the R Markdown script for reproducibility.
 
-## Load any required packages in a code chunk 
+## Load any required packages in a code chunk
 
 ```{r, message=F, warning=F}
 Sys.setenv(PROJ_LIB = "/opt/homebrew/Cellar/proj/9.5.1/share/proj")
@@ -262,10 +262,21 @@ Adding country information to earthquake data involves performing a spatial join
 
 ```{r}
 
-# Load world country boundaries (from spData package or other source)
-data(world)  # spData package provides `world` dataset
+# Ensure the world dataset is loaded (from spData or another source)
+if (!requireNamespace("spData", quietly = TRUE)) {
+  install.packages("spData")
+}
 
-# Ensure CRS of earthquake data matches world dataset
+data(world)  # Load the `world` dataset from spData
+
+# Ensure quake_sf has a CRS before transforming
+# Check if quake_sf has a CRS
+if (is.null(st_crs(quake_sf))) {
+  # If CRS is missing, set it to the desired CRS (e.g., WGS 84 - EPSG:4326)
+  st_crs(quake_sf) <- 4326
+}
+
+# Ensure CRS of earthquake data matches the world dataset
 quake_sf <- st_transform(quake_sf, st_crs(world))
 
 # Perform spatial join between earthquake points and country polygons
@@ -288,6 +299,10 @@ print(country_quakes)
 # Join summarized data back to the world dataset
 world_quakes <- world %>%
   left_join(country_quakes, by = c("name_long" = "name_long"))
+
+# Inspect the updated world dataset
+print(world_quakes)
+
 ```
 
 ## Interactive Map with Country Information
@@ -426,4 +441,3 @@ Pebesma, E., & Bivand, R. (2021). spData: World and Regional Boundaries for Anal
 Pebesma, E. (2018). Simple Features for R: Standardized Support for Spatial Vector Data. The R Journal, 10(1), 439-446. Retrieved from https://doi.org/10.32614/RJ-2018-009.
 
 Cheng, J., Karambelkar, B., & Xie, Y. (2023). leaflet: Interactive Web Maps with R. R package version 2.1.1. Retrieved from https://cran.r-project.org/package=leaflet.\
-
