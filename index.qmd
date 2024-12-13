@@ -56,11 +56,11 @@ Interactive maps, heatmaps, and statistical visualizations are employed to commu
 ```{r, message=F, warning=F}
 Sys.setenv(PROJ_LIB = "/opt/homebrew/Cellar/proj/9.5.1/share/proj")
 install.packages("sf")
-#install.packages("tidyverse")
-#install.packages("lubridate")
-#install.packages("ggplot2")
-#install.packages("spData")
-#install.packages("ggmap")
+install.packages("tidyverse")
+install.packages("lubridate")
+install.packages("ggplot2")
+install.packages("spData")
+install.packages("ggmap")
 install.packages("leaflet.extras")
 
 # Load libraries
