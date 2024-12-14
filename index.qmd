@@ -177,10 +177,6 @@ region <- st_bbox(quake_sf)
 print(region)
 ```
 
-## Spatial Distribution of Earthquakes
-
-The spatial distribution of earthquakes provides valuable insights into where seismic activity is concentrated across the globe. By analyzing earthquake locations and clustering patterns, we can identify tectonic hotspots, understand fault line behaviors, and prioritize regions for disaster preparedness.
-
 ## Earthquake Trends Over Time
 
 ```{r}
@@ -351,7 +347,7 @@ plot_ly(
 
 ```
 
-visualizes regions with high seismic activity using color intensity highlighting global earthquake hotspots and clustering patterns, providing insights into areas prone to frequent or significant seismic events.
+Tihs graph visualizes the spread and variability of earthquake magnitudes across different countries. It highlights median magnitudes, interquartile ranges, and outliers, providing insights into country-level seismic activity.
 
 ## Correlation Between Magnitude and Depth with Country Data
 
@@ -395,13 +391,11 @@ The relation between magnitude and depth, analyzed with country-level data, reve
 
 The results of this analysis provide insights into the global distribution of earthquakes, their magnitudes, and their relationships with depth and country-specific patterns.
 
-1.  **Earthquake Density Heatmap:** A global heatmap was created to visualize earthquake density using `leaflet.extras`. It highlights significant hotspots such as the Pacific Ring of Fire, the Himalayan region, and the Andes. High-intensity clusters are most visible in tectonically active zones. This visualization allows users to explore regions with frequent seismic activity interactively.
+1.  **Temporal Trends:** A Plotly chart combines a bar graph of earthquake counts and a line plot of mean magnitudes for each decade from 1980 to 2020. The results show a relatively stable frequency of earthquakes, with noticeable variations in mean magnitude, such as higher averages in the 1990s.
 
-2.  **Temporal Trends:** A Plotly chart combines a bar graph of earthquake counts and a line plot of mean magnitudes for each decade from 1980 to 2020. The results show a relatively stable frequency of earthquakes, with noticeable variations in mean magnitude, such as higher averages in the 1990s.
+2.  **Country-Level Analysis:** An interactive map using `leaflet` displays earthquake density by country. Popups reveal detailed statistics, including total earthquake counts, mean magnitude, and maximum magnitude. Countries like Indonesia, Japan, and Chile show the highest activity.
 
-3.  **Country-Level Analysis:** An interactive map using `leaflet` displays earthquake density by country. Popups reveal detailed statistics, including total earthquake counts, mean magnitude, and maximum magnitude. Countries like Indonesia, Japan, and Chile show the highest activity.
-
-4.  **Magnitude-Depth Correlation:** A scatterplot with country-level coloring explores the relationship between magnitude and depth. The results indicate that most earthquakes are shallow (\< 70 km) with high variability in magnitude, while deeper earthquakes exhibit a narrower range of magnitudes.
+3.  **Magnitude-Depth Correlation:** A scatterplot with country-level coloring explores the relationship between magnitude and depth. The results indicate that most earthquakes are shallow (\< 70 km) with high variability in magnitude, while deeper earthquakes exhibit a narrower range of magnitudes.
 
 The interactive and static visuals effectively summarize seismic patterns, guiding both scientific understanding and policy recommendations.
 
