@@ -329,41 +329,25 @@ leaflet(data = world_quakes) %>%
 
 This map highlights earthquake density by country, allowing users to explore regions most affected by seismic activity. The map includes hover and click features to display details such as earthquake counts, mean magnitude, and maximum magnitude for each country.
 
-## Earthquake density heatmap
+## Magnitude Distribution Boxplot
 
 ```{r}
-# Extract coordinates from quake_sf
-quake_coords <- as.data.frame(st_coordinates(quake_sf)) %>%
-  cbind(mag = quake_sf$mag)
-
-# Remove rows with missing coordinates
-quake_coords <- quake_coords[!is.na(quake_coords$X) & !is.na(quake_coords$Y), ]
-
-# Simplify data for stat_density2d
-quake_coords_subset <- quake_coords[, c("X", "Y")]
-colnames(quake_coords_subset) <- c("x", "y")  # Rename for compatibility
-
-# Plot earthquake density heatmap
-ggplot() +
-  geom_sf(data = world, fill = "lightgray", color = "white") +
-  stat_density2d(
-    data = quake_coords_subset,
-    aes(x = x, y = y, fill = ..level..),
-    geom = "polygon", alpha = 0.6
-  ) +
-  scale_fill_viridis_c(name = "Density") +
-  coord_sf() +
-  theme_minimal() +
-  labs(
-    title = "Earthquake Density Heatmap (1980-2020)",
-    x = "Longitude",
-    y = "Latitude"
+# Create boxplot using Plotly
+plot_ly(
+  data = quake_with_countries %>% st_drop_geometry(),
+  y = ~mag, 
+  x = ~name_long,
+  type = 'box', 
+  color = ~name_long,
+  text = ~paste("Country:", name_long, "<br>Magnitude:", mag),
+  hoverinfo = "text"
+) %>%
+  layout(
+    title = "Earthquake Magnitude Distribution by Country",
+    xaxis = list(title = "Country", tickangle = -45),
+    yaxis = list(title = "Magnitude"),
+    showlegend = FALSE
   )
-
-```
-
-```{r}
-colnames(quake_coords_subset) <- c("x", "y")
 
 ```
 
