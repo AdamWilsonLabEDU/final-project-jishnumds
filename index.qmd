@@ -53,20 +53,20 @@ Interactive maps, heatmaps, and statistical visualizations are employed to commu
 
 ## Load any required packages in a code chunk
 
-```{r, message=F, warning=F}
+```{r message=FALSE, warning=FALSE, results='hide'}
 Sys.setenv(PROJ_LIB = "/opt/homebrew/Cellar/proj/9.5.1/share/proj")
-#install.packages("sf")
-#install.packages("tidyverse")
-#install.packages("lubridate")
-#install.packages("ggplot2")
-#install.packages("spData")
-#install.packages("ggmap")
-#install.packages("leaflet.extras")
-#install.packages("plotly")
-#install.packages("httr")
-#install.packages("jsonlite")
-#install.packages("leaflet")
-#install.packages("dplyr")
+install.packages("sf", quietly = TRUE, verbose = FALSE)
+install.packages("tidyverse", quietly = TRUE, verbose = FALSE)
+install.packages("lubridate", quietly = TRUE, verbose = FALSE)
+install.packages("ggplot2", quietly = TRUE, verbose = FALSE)
+install.packages("spData", quietly = TRUE, verbose = FALSE)
+install.packages("ggmap", quietly = TRUE, verbose = FALSE)
+install.packages("leaflet.extras", quietly = TRUE, verbose = FALSE)
+install.packages("plotly", quietly = TRUE, verbose = FALSE)
+install.packages("httr", quietly = TRUE, verbose = FALSE)
+install.packages("jsonlite", quietly = TRUE, verbose = FALSE)
+install.packages("leaflet", quietly = TRUE, verbose = FALSE)
+install.packages("dplyr", quietly = TRUE, verbose = FALSE)
 
 
 # Load libraries
