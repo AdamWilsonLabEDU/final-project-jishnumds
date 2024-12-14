@@ -55,18 +55,18 @@ Interactive maps, heatmaps, and statistical visualizations are employed to commu
 
 ```{r, message=F, warning=F}
 Sys.setenv(PROJ_LIB = "/opt/homebrew/Cellar/proj/9.5.1/share/proj")
-install.packages("sf")
-install.packages("tidyverse")
-install.packages("lubridate")
-install.packages("ggplot2")
-install.packages("spData")
-install.packages("ggmap")
-install.packages("leaflet.extras")
-install.packages("plotly")
-install.packages("httr")
-install.packages("jsonlite")
-install.packages("leaflet")
-install.packages("dplyr")
+#install.packages("sf")
+#install.packages("tidyverse")
+#install.packages("lubridate")
+#install.packages("ggplot2")
+#install.packages("spData")
+#install.packages("ggmap")
+#install.packages("leaflet.extras")
+#install.packages("plotly")
+#install.packages("httr")
+#install.packages("jsonlite")
+#install.packages("leaflet")
+#install.packages("dplyr")
 
 
 # Load libraries
