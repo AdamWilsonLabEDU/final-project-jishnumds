@@ -336,18 +336,19 @@ This map highlights earthquake density by country, allowing users to explore reg
 quake_coords <- as.data.frame(st_coordinates(quake_sf)) %>%
   cbind(mag = quake_sf$mag)
 
-# Remove any rows with missing coordinates
+# Remove rows with missing coordinates
 quake_coords <- quake_coords[!is.na(quake_coords$X) & !is.na(quake_coords$Y), ]
 
 # Simplify data for stat_density2d
 quake_coords_subset <- quake_coords[, c("X", "Y")]
+colnames(quake_coords_subset) <- c("x", "y")  # Rename for compatibility
 
 # Plot earthquake density heatmap
 ggplot() +
   geom_sf(data = world, fill = "lightgray", color = "white") +
   stat_density2d(
     data = quake_coords_subset,
-    aes(x = X, y = Y, fill = ..level..),
+    aes(x = x, y = y, fill = ..level..),
     geom = "polygon", alpha = 0.6
   ) +
   scale_fill_viridis_c(name = "Density") +
@@ -358,6 +359,12 @@ ggplot() +
     x = "Longitude",
     y = "Latitude"
   )
+
+```
+
+```{r}
+colnames(quake_coords_subset) <- c("x", "y")
+
 ```
 
 visualizes regions with high seismic activity using color intensity highlighting global earthquake hotspots and clustering patterns, providing insights into areas prone to frequent or significant seismic events.
