@@ -336,11 +336,17 @@ This map highlights earthquake density by country, allowing users to explore reg
 quake_coords <- as.data.frame(st_coordinates(quake_sf)) %>%
   cbind(mag = quake_sf$mag)
 
+# Remove any rows with missing coordinates
+quake_coords <- quake_coords[!is.na(quake_coords$X) & !is.na(quake_coords$Y), ]
+
+# Simplify data for stat_density2d
+quake_coords_subset <- quake_coords[, c("X", "Y")]
+
 # Plot earthquake density heatmap
 ggplot() +
   geom_sf(data = world, fill = "lightgray", color = "white") +
   stat_density2d(
-    data = quake_coords,
+    data = quake_coords_subset,
     aes(x = X, y = Y, fill = ..level..),
     geom = "polygon", alpha = 0.6
   ) +
